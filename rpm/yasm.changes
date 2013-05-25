@@ -1,0 +1,128 @@
+* Mon Aug 06 2012 Christian Wittmer <chris@computersalat.de> - 1.2.0
+- update to 1.2.0
+  * Add AVX2 instructions (rev 11 of Intel AVX reference) (#227).
+  * Allow 64-bit LFS/LGS/LSS.
+  * Improve LAR instruction support (#224).
+  * Default win64 .xdata to nobase, add support for "..imagebase" (#135).
+  * Fix "TIME" relocation handling.
+  * Fix no-suffix push and pop in GAS mode (#212).
+  * See the bug tracker for a full list of bug fixes.
+- rebase no-build-date patch
+- add yasm-no-rpm-opt-flags patch
+- fix License
+  * Artistic-1.0, BSD-2-Clause, BSD-3-Clause, GPL-2.0+, LGPL-2.0+
+
+* Sun Oct 24 2010 Ruediger Oertel <ro@suse.de> - 1.1.0
+- update to 1.1.0
+  * Fix a number of issues with Win32 SAFESEH support (#139).
+  * Fix several 32-bit Mach-O (macho32) bugs (#212 and others).
+  * Add Intel post-32nm instructions (section 7 of AVX spec).
+  * Add XSAVEOPT, INVEPT, INVVPID, and GETSEC instructions (#211).
+  * Remove AMD CVT16 instructions.
+  * Don't emit unnecessary REX.W for pinsrw instruction (#207).
+  * Update gettext to 0.17 (#206).
+- update to 1.0.1
+  * Fix ELF32 shared object relocations (#202).
+  * Ignore [warning] directive (#201).
+- update to 1.0.0
+  * Add GAS preprocessor (fixes #79).
+  * Add Visual Studio 2010 special frontend, vsyasm
+  * Add support for AMD XOP, FMA4, and CVT16 instructions
+    (replacing SSE5).
+  * Add support for %scope and %endscope NASM macros
+  * Add support for %{x:y} parameter list expansion
+    in NASM preprocessor
+  * Fix _GLOBAL_OFFSET_TABLE_
+  * Add support for ELF64 PC-relative relocations and latest ELF32
+    relocation types.
+  * Add support for ELF tlsdesc, tlscall, pltoff, gotplt, gotoff
+    special symbols.
+  * NASM preprocessor license has been changed to 2-clause BSD.
+  * Various bugfixes in TASM syntax support.
+  * Many other bugfixes
+
+* Mon Aug 30 2010 Cristian Rodriguez <cristian.rodriguez@opensuse.org> - 0.8.0
+- Do not include build dates in the binaries
+
+* Sat Jan 02 2010 Philipp Thomas <pth@novell.com> - 0.8.0
+- Update to 0.8.0. Changes from 0.7.2 :
+    * Add TASM-like basic syntax and frontend.
+    * Add movbe instruction and CPU feature.
+    * Don't require 0d/0e/0f/0t prefix on floating point numbers in GAS syntax.
+    * Legalize effective addresses such as [eax*2+ebx*2-ebx].
+    * Allow @ signs in identifiers in win32/win64 GAS syntax.
+    * Update AVX and FMA to latest Intel specifications.
+    * Update code alignment opcodes for modern processors, make 
+      configurable using CPU directive.
+    * Fix referencing of local label from line that defines nonlocal label.
+    * Default memory size to "s" for no-suffix FP conversions in GAS syntax.
+    * Other bugfixes. 
+
+* Wed Feb 11 2009 Dirk Mueller <dmueller@suse.de> - 0.7.2
+- update to 0.7.2:
+  * http://www.tortall.net/projects/yasm/wiki/Release0.7.2
+
+* Tue Oct 30 2007 Ulrich Hecht <uli@suse.de> - 0.6.2
+- update -> 0.6.2; new features since 0.4.0:
+  * AMD SSE4a and SSE5 instruction support.
+  * AMD LZCNT, POPCNT, EXTRQ, INSERTQ, MOVNTSD, and MOVNTSS instruction
+    support.
+  * 16-bit float value (IEEE-754r half precision) support (desirable for
+    SSE5).
+  * Added "oword", "do", and "reso" aliases for "dqword", "ddq", "resdq".
+  * Added easier RIP-relative addressing with rel/abs modifiers and
+    "default" directive to set default rel/abs mode (see AMD64 for details).
+  * CPP preprocessor. Contributed by Paul Barker
+  * GAS local labels (1:, 1f, 1b) support. Noticed by Jung Lee
+  * GAS .org fill parameter support. Noticed by Jung Lee and Xiaoming Mo
+  * Command line aliases for -d (-D) and -u (-U) for increased NASM
+    command line compatibility. Requested by Mike Frysinger
+  * SSE4.1 and SSE4.2 instruction support. Noticed by arkon@ragestorm.net
+  * Support for .set directive in GAS parser. Contributed by Sebastian
+    D'Alessandro
+  * -E and -s command line options, similar to NASM options of the same
+    names (redirect errors to file and stdout, respectively). Suggested by:
+    pingved@gmail.com
+  * -Wsize-override option, to turn on warnings for duplicated size
+    overrides such as "dword dword" or "word word". Suggested by:
+    pingved@gmail.com
+  * Reconcile generated prefix order with GAS, to suggested Intel ordering
+    of SEG, ADDR, DATA, LOCKREP (AMD doesn't care).
+  * Fix test failure in Mach-O object format. Reported by many (e.g.
+    #105), first by Christophe Malvasio
+  * end_prolog macro equivalent to end_prologue (for Win64 structured
+    exception handling). Suggested by Brian Gladman
+  * Allow RIP-relative cross-section references in bin output.
+  * Mach-O custom sections: #102
+  * Brand-new "virtual" multi-pass optimizer that automatically generates
+    much smaller code for jumps and immediates.
+  * Support for Mach-O object format used in MacOS X, including both the
+    32-bit (x86) and 64-bit (AMD64) versions (contributed by Henryk
+    Richter).
+  * Support for structured exception handling on Win64.
+  * Support for RDOFF2 (.rdf) object format.
+  * Support for STRICT keyword in NASM syntax.
+  * Rewritten NASM and GAS parsers (now recursive descent rather than
+    Bison-based).
+  * Yasm no longer defaults to reading from standard input if no files are
+    specified; standard input can be specified with "-".
+  * Support for arithmetic on single-character constants.
+  * Support for OUTPUT_FORMAT as an alias for YASM_OBJFMT.
+  * Support for CodeView? 8.0 source debugging (as used by Visual Studio
+    2005).
+  * Fixed -I support to properly handle relative paths (now the search
+    pattern is essentially identical to most C compilers). This change is
+    backwards incompatible (to both NASM and earlier Yasm versions), but is
+    much more consistent.
+  * Standard macros that provide version information: __YASM_MAJOR__,
+    __YASM_MINOR__, __YASM_SUBMINOR__, __YASM_BUILD__, __YASM_VERSION_ID__
+    and __YASM_VER__.
+  * Aliases for AMD64 object formats: "win64" and "elf64" (these
+    automatically set the machine to "amd64").
+  * "x64" alias for Win64 object format (for easier use with Visual
+    Studio).
+  * DWARF2 source debugging (enable with "-g dwarf2").
+  * GAS parser good enough to take GCC output for both AMD64 and 32-bit
+    x86 (including DWARF2 debug information).
+  * Specifying "amd64" as the machine (or using a 64-bit object format)
+    automatically sets BITS 64.

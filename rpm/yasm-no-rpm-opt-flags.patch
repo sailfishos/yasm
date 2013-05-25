@@ -1,0 +1,11 @@
+diff --git a/Makefile.am b/Makefile.am
+index 9efb16f..c2d4a78 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -158,5 +158,5 @@ genstring_LDADD = genstring.$(OBJEXT)
+ genstring_LINK = $(CCLD_FOR_BUILD) -o $@
+ 
+ genstring.$(OBJEXT): genstring.c
+-	$(CC_FOR_BUILD) $(DEFAULT_INCLUDES) $(INCLUDES) -c -o $@ `test -f genstring.c || echo '$(srcdir)/'`genstring.c
++	$(CC_FOR_BUILD) $(CFLAGS) $(DEFAULT_INCLUDES) $(INCLUDES) -c -o $@ `test -f genstring.c || echo '$(srcdir)/'`genstring.c
+ 
