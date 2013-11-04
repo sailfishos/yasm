@@ -27,6 +27,7 @@ Source:         %{name}-%{version}.tar.gz
 Patch0:         %{name}-no-build-date.patch
 Patch1:         %{name}-no-rpm-opt-flags.patch
 BuildRequires:  python
+ExclusiveArch:  i586 i486 i386
 
 %description
 YASM is a complete rewrite of the NASM assembler. It is designed from
