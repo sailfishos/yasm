@@ -1,0 +1,24 @@
+From 176a6956b0b40f56a311a8247794ce602138150b Mon Sep 17 00:00:00 2001
+From: Raine Makelainen <raine.makelainen@jolla.com>
+Date: Tue, 13 Dec 2016 12:12:10 +0200
+Subject: [PATCH 2/2] yasm: No RPM opt flags
+
+Signed-off-by: Raine Makelainen <raine.makelainen@jolla.com>
+---
+ Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index b1524aa..1a837dc 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -233,5 +233,5 @@ genstring_LDADD = genstring.$(OBJEXT)
+ genstring_LINK = $(CCLD_FOR_BUILD) -o $@
+ 
+ genstring.$(OBJEXT): genstring.c
+-	$(CC_FOR_BUILD) $(DEFAULT_INCLUDES) $(INCLUDES) -c -o $@ `test -f genstring.c || echo '$(srcdir)/'`genstring.c
++	$(CC_FOR_BUILD) $(CFLAGS) $(DEFAULT_INCLUDES) $(INCLUDES) -c -o $@ `test -f genstring.c || echo '$(srcdir)/'`genstring.c
+ 
+-- 
+2.7.4
+

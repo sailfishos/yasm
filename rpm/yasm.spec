@@ -18,14 +18,14 @@
 
 Name:           yasm
 Summary:        A complete rewrite of the NASM assembler
-License:        Artistic-1.0 and BSD-2-Clause and BSD-3-Clause and GPL-2.0+ and LGPL-2.0+
+License:        (Artistic-1.0 or GPLv2+ or LGPLv2+) and BSD and GPLv2+ and LGPLv2+
 Group:          Development/Languages/Other
-Version:        1.2.0
+Version:        1.3.0
 Release:        0
-Url:            http://www.tortall.net/projects/yasm/
+Url:            http://www.tortall.net/projects/yasm/releases
 Source:         %{name}-%{version}.tar.gz
-Patch0:         %{name}-no-build-date.patch
-Patch1:         %{name}-no-rpm-opt-flags.patch
+Patch0:         0001-%{name}-No-build-date.patch
+Patch1:         0002-%{name}-No-RPM-opt-flags.patch
 BuildRequires:  python
 ExclusiveArch:  i586 i486 i386 x86_64
 
@@ -47,7 +47,7 @@ libyasm.
 
 %prep
 %setup -q -n %{name}-%{version}/%{name}
-%patch0
+%patch0 -p1
 %patch1 -p1
 
 %build
@@ -59,10 +59,6 @@ make %{?jobs:-j%jobs}
 
 %install
 %makeinstall
-
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root)
