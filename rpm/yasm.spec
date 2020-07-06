@@ -19,14 +19,13 @@
 Name:           yasm
 Summary:        A complete rewrite of the NASM assembler
 License:        (Artistic-1.0 or GPLv2+ or LGPLv2+) and BSD and GPLv2+ and LGPLv2+
-Group:          Development/Languages/Other
 Version:        1.3.0
 Release:        0
 Url:            http://www.tortall.net/projects/yasm/releases
 Source:         %{name}-%{version}.tar.gz
 Patch0:         0001-%{name}-No-build-date.patch
 Patch1:         0002-%{name}-No-RPM-opt-flags.patch
-BuildRequires:  python
+BuildRequires:  python3-devel
 ExclusiveArch:  i586 i486 i386 x86_64
 
 %description
@@ -38,7 +37,6 @@ Actually it supports ix86 and AMD64, next will be PowerPC
 
 %package devel
 Summary:        YASM development package
-Group:          Development/Languages
 Requires:       %{name} = %{version}
 
 %description devel
@@ -46,16 +44,14 @@ This package includes everything needed to develop programs that use
 libyasm.
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
-%patch0 -p1
-%patch1 -p1
+%autosetup -p1 -n %{name}-%{version}/%{name}
 
 %build
 export CFLAGS="%{optflags}"
 %autogen \
  --with-gnu-ld \
  --enable-python
-make %{?jobs:-j%jobs}
+%make_build
 
 %install
 %makeinstall
@@ -64,11 +60,11 @@ make %{?jobs:-j%jobs}
 %defattr(-,root,root)
 %doc Artistic.txt BSD.txt COPYING GNU_GPL-2.0 GNU_LGPL-2.0
 %doc ABOUT-NLS AUTHORS ChangeLog NEWS README
-/usr/bin/*
-%_mandir/man7/*
-%_mandir/man1/*
+%{_bindir}/*
+%{_mandir}/man7/*
+%{_mandir}/man1/*
 
 %files devel
 %defattr(-,root,root)
-/usr/include/*
-%_libdir/lib*.a
+%{_includedir}/*
+%{_libdir}/lib*.a
