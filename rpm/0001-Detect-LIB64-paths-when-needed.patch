@@ -1,0 +1,62 @@
+From 538391d6f2eb4bd389968637a3b60049afc3b452 Mon Sep 17 00:00:00 2001
+From: Niels Breet <niels.breet@jolla.com>
+Date: Thu, 28 Oct 2021 09:57:12 +0300
+Subject: [PATCH] Detect LIB64 paths when needed
+
+---
+ libyasm/CMakeLists.txt | 12 ++++++++++--
+ modules/CMakeLists.txt | 10 +++++++++-
+ 2 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/libyasm/CMakeLists.txt b/libyasm/CMakeLists.txt
+index bd9b7b2..64fde38 100644
+--- a/libyasm/CMakeLists.txt
++++ b/libyasm/CMakeLists.txt
+@@ -42,10 +42,18 @@ ELSE(BUILD_SHARED_LIBS)
+         )
+ ENDIF(BUILD_SHARED_LIBS)
+ 
++get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
++
++if ("${LIB64}" STREQUAL "TRUE")
++    set(LIBSUFFIX 64)
++else()
++    set(LIBSUFFIX "")
++endif()
++
+ INSTALL(TARGETS libyasm
+     RUNTIME DESTINATION bin
+-    LIBRARY DESTINATION lib
+-    ARCHIVE DESTINATION lib
++    LIBRARY DESTINATION lib${LIBSUFFIX}
++    ARCHIVE DESTINATION lib${LIBSUFFIX}
+     )
+ 
+ INSTALL(FILES
+diff --git a/modules/CMakeLists.txt b/modules/CMakeLists.txt
+index e3f8eb1..19d5639 100644
+--- a/modules/CMakeLists.txt
++++ b/modules/CMakeLists.txt
+@@ -89,10 +89,18 @@ IF(BUILD_SHARED_LIBS)
+         )
+     TARGET_LINK_LIBRARIES(yasmstd libyasm)
+ 
++    get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
++
++    if ("${LIB64}" STREQUAL "TRUE")
++        set(LIBSUFFIX 64)
++    else()
++        set(LIBSUFFIX "")
++    endif()
++
+     IF(WIN32)
+         INSTALL(TARGETS yasmstd LIBRARY DESTINATION bin)
+     ELSE(WIN32)
+-        INSTALL(TARGETS yasmstd LIBRARY DESTINATION lib)
++        INSTALL(TARGETS yasmstd LIBRARY DESTINATION lib${LIBSUFFIX})
+     ENDIF(WIN32)
+ ELSE(BUILD_SHARED_LIBS)
+     ADD_LIBRARY(yasmstd
+-- 
+1.9.1
+
