@@ -6,7 +6,7 @@ Release:        1
 Url:            http://yasm.tortall.net/
 Source:         %{name}-%{version}.tar.bz2
 Patch0:         no-build-date.patch
-Patch1:         0001-Detect-LIB64-paths-when-needed.patch
+Patch1:         0001-Use-GNUInstallDirs-for-file-paths-when-installing-fi.patch
 BuildRequires:  cmake
 BuildRequires:  python3-base
 ExclusiveArch:  i586 i486 i386 x86_64

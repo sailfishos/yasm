@@ -1,0 +1,110 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bj=C3=B6rn=20Bidar?= <bjorn.bidar@jolla.com>
+Date: Thu, 10 Feb 2022 11:52:46 +0200
+Subject: [PATCH] Use GNUInstallDirs for file paths when installing files.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Björn Bidar <bjorn.bidar@jolla.com>
+---
+ CMakeLists.txt                  | 3 ++-
+ frontends/tasm/CMakeLists.txt   | 2 +-
+ frontends/vsyasm/CMakeLists.txt | 2 +-
+ frontends/yasm/CMakeLists.txt   | 2 +-
+ libyasm/CMakeLists.txt          | 8 ++++----
+ modules/CMakeLists.txt          | 4 ++--
+ 6 files changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8df871cf..91f5e562 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -9,6 +9,7 @@ OPTION(BUILD_SHARED_LIBS "Build shared libraries" ON)
+ # Where to look first for cmake modules
+ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+ 
++INCLUDE(GNUInstallDirs)
+ INCLUDE(YasmMacros)
+ INCLUDE(VersionGen)
+ 
+@@ -43,5 +44,5 @@ ADD_SUBDIRECTORY(frontends)
+ INSTALL(FILES
+     libyasm.h
+     ${CMAKE_BINARY_DIR}/libyasm-stdint.h
+-    DESTINATION include
++    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+     )
+diff --git a/frontends/tasm/CMakeLists.txt b/frontends/tasm/CMakeLists.txt
+index e275ab84..5672714c 100644
+--- a/frontends/tasm/CMakeLists.txt
++++ b/frontends/tasm/CMakeLists.txt
+@@ -34,4 +34,4 @@ SET_SOURCE_FILES_PROPERTIES(tasm.c PROPERTIES
+     OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/license.c
+     )
+ 
+-INSTALL(TARGETS ytasm RUNTIME DESTINATION bin)
++INSTALL(TARGETS ytasm RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+diff --git a/frontends/vsyasm/CMakeLists.txt b/frontends/vsyasm/CMakeLists.txt
+index 6815b18d..f75fc583 100644
+--- a/frontends/vsyasm/CMakeLists.txt
++++ b/frontends/vsyasm/CMakeLists.txt
+@@ -34,4 +34,4 @@ SET_SOURCE_FILES_PROPERTIES(vsyasm.c PROPERTIES
+     OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/license.c
+     )
+ 
+-INSTALL(TARGETS vsyasm RUNTIME DESTINATION bin)
++INSTALL(TARGETS vsyasm RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+diff --git a/frontends/yasm/CMakeLists.txt b/frontends/yasm/CMakeLists.txt
+index b11d7f82..462afb90 100644
+--- a/frontends/yasm/CMakeLists.txt
++++ b/frontends/yasm/CMakeLists.txt
+@@ -31,4 +31,4 @@ SET_SOURCE_FILES_PROPERTIES(yasm.c PROPERTIES
+     OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/license.c
+     )
+ 
+-INSTALL(TARGETS yasm RUNTIME DESTINATION bin)
++INSTALL(TARGETS yasm RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+diff --git a/libyasm/CMakeLists.txt b/libyasm/CMakeLists.txt
+index bd9b7b28..de6e4fbc 100644
+--- a/libyasm/CMakeLists.txt
++++ b/libyasm/CMakeLists.txt
+@@ -43,9 +43,9 @@ ELSE(BUILD_SHARED_LIBS)
+ ENDIF(BUILD_SHARED_LIBS)
+ 
+ INSTALL(TARGETS libyasm
+-    RUNTIME DESTINATION bin
+-    LIBRARY DESTINATION lib
+-    ARCHIVE DESTINATION lib
++    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+     )
+ 
+ INSTALL(FILES
+@@ -76,5 +76,5 @@ INSTALL(FILES
+     symrec.h
+     valparam.h
+     value.h
+-    DESTINATION include/libyasm
++    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libyasm
+     )
+diff --git a/modules/CMakeLists.txt b/modules/CMakeLists.txt
+index e3f8eb11..04b3f7bd 100644
+--- a/modules/CMakeLists.txt
++++ b/modules/CMakeLists.txt
+@@ -90,9 +90,9 @@ IF(BUILD_SHARED_LIBS)
+     TARGET_LINK_LIBRARIES(yasmstd libyasm)
+ 
+     IF(WIN32)
+-        INSTALL(TARGETS yasmstd LIBRARY DESTINATION bin)
++        INSTALL(TARGETS yasmstd LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR})
+     ELSE(WIN32)
+-        INSTALL(TARGETS yasmstd LIBRARY DESTINATION lib)
++        INSTALL(TARGETS yasmstd LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+     ENDIF(WIN32)
+ ELSE(BUILD_SHARED_LIBS)
+     ADD_LIBRARY(yasmstd
+-- 
+2.34.1
+
