@@ -3,7 +3,7 @@ Summary:        A complete rewrite of the NASM assembler
 License:        BSD and (GPLv2+ or Artistic or LGPLv2+) and LGPLv2
 Version:        1.3.0
 Release:        1
-Url:            http://yasm.tortall.net/
+Url:            https://github.com/sailfishos/yasm
 Source:         %{name}-%{version}.tar.bz2
 Patch0:         no-build-date.patch
 BuildRequires:  cmake
