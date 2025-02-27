@@ -5,11 +5,11 @@ Version:        1.3.0
 Release:        1
 Url:            https://github.com/sailfishos/yasm
 Source:         %{name}-%{version}.tar.bz2
-Patch0:         no-build-date.patch
 Patch1:         0001-Use-GNUInstallDirs-for-file-paths-when-installing-fi.patch
+Patch2:         yasm-gcc15.patch
 BuildRequires:  cmake
 BuildRequires:  python3-base
-ExclusiveArch:  i586 i486 i386 x86_64
+ExclusiveArch:  %{ix86} x86_64
 
 %description
 Yasm is a complete rewrite of the NASM assembler. It is designed from
@@ -37,7 +37,6 @@ This package includes headers needed to develop programs that use libyasm.
 %make_install
 
 %files
-%defattr(-,root,root,-)
 %license Artistic.txt BSD.txt COPYING GNU_GPL-2.0 GNU_LGPL-2.0
 %{_bindir}/vsyasm
 %{_bindir}/yasm
@@ -45,6 +44,5 @@ This package includes headers needed to develop programs that use libyasm.
 %{_libdir}/*.so
 
 %files devel
-%defattr(-,root,root,-)
 %doc AUTHORS
 %{_includedir}/*
