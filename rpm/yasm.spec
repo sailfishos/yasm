@@ -7,6 +7,8 @@ Url:            https://github.com/sailfishos/yasm
 Source:         %{name}-%{version}.tar.bz2
 Patch1:         0001-Use-GNUInstallDirs-for-file-paths-when-installing-fi.patch
 Patch2:         yasm-gcc15.patch
+# From https://github.com/yasm/yasm/pull/286
+Patch3:         0002-Bump-CMAKE_MINIMUM_REQUIRED-to-3.5-285.patch
 BuildRequires:  cmake
 BuildRequires:  python3-base
 ExclusiveArch:  %{ix86} x86_64
@@ -31,10 +33,10 @@ This package includes headers needed to develop programs that use libyasm.
 
 %build
 %cmake -DBUILD_SHARED_LIBS=ON -DENABLE_NLS=OFF
-%make_build
+%cmake_build
 
 %install
-%make_install
+%cmake_install
 
 %files
 %license Artistic.txt BSD.txt COPYING GNU_GPL-2.0 GNU_LGPL-2.0

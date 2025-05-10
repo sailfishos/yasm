@@ -1,0 +1,82 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Haowei Wu <haowei@google.com>
+Date: Mon, 7 Apr 2025 15:13:49 -0700
+Subject: [PATCH] Bump CMAKE_MINIMUM_REQUIRED to 3.5 (#285)
+
+This patch bumps the `CMAKE_MINIMUM_REQUIRED` to 3.5. It also made
+minimal patches to cmake files to fix any build config issues.
+---
+ CMakeLists.txt                       |  2 +-
+ cmake/modules/YasmMacros.cmake       | 15 ++++++---------
+ modules/preprocs/nasm/CMakeLists.txt |  5 ++---
+ 3 files changed, 9 insertions(+), 13 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8df871cf74d721a10ee7e90528e75370eea1a110..2eafe3fdecb3e3e9d08f7e217983e2f8bf0545be 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ PROJECT(yasm)
+-CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
++CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+ if (COMMAND cmake_policy)
+     cmake_policy(SET CMP0003 NEW)
+ endif (COMMAND cmake_policy)
+diff --git a/cmake/modules/YasmMacros.cmake b/cmake/modules/YasmMacros.cmake
+index ab1be00e9510d73bade4a1e04f21f9d62fc605b9..e6006b31c8df14f216e860db95429328ca2d983a 100644
+--- a/cmake/modules/YasmMacros.cmake
++++ b/cmake/modules/YasmMacros.cmake
+@@ -58,31 +58,28 @@ macro (YASM_ADD_MODULE _module_NAME)
+ endmacro (YASM_ADD_MODULE)
+ 
+ macro (YASM_GENPERF _in_NAME _out_NAME)
+-    get_target_property(_tmp_GENPERF_EXE genperf LOCATION)
+     add_custom_command(
+         OUTPUT ${_out_NAME}
+-        COMMAND ${_tmp_GENPERF_EXE} ${_in_NAME} ${_out_NAME}
+-        DEPENDS ${_tmp_GENPERF_EXE}
++        COMMAND $<TARGET_FILE:genperf> ${_in_NAME} ${_out_NAME}
++        DEPENDS genperf
+         MAIN_DEPENDENCY ${_in_NAME}
+         )
+ endmacro (YASM_GENPERF)
+ 
+ macro (YASM_RE2C _in_NAME _out_NAME)
+-    get_target_property(_tmp_RE2C_EXE re2c LOCATION)
+     add_custom_command(
+         OUTPUT ${_out_NAME}
+-        COMMAND ${_tmp_RE2C_EXE} ${ARGN} -o ${_out_NAME} ${_in_NAME}
+-        DEPENDS ${_tmp_RE2C_EXE}
++        COMMAND $<TARGET_FILE:re2c> ${ARGN} -o ${_out_NAME} ${_in_NAME}
++        DEPENDS re2c
+         MAIN_DEPENDENCY ${_in_NAME}
+         )
+ endmacro (YASM_RE2C)
+ 
+ macro (YASM_GENMACRO _in_NAME _out_NAME _var_NAME)
+-    get_target_property(_tmp_GENMACRO_EXE genmacro LOCATION)
+     add_custom_command(
+         OUTPUT ${_out_NAME}
+-        COMMAND ${_tmp_GENMACRO_EXE} ${_out_NAME} ${_var_NAME} ${_in_NAME}
+-        DEPENDS ${_tmp_GENMACRO_EXE}
++        COMMAND $<TARGET_FILE:genmacro> ${_out_NAME} ${_var_NAME} ${_in_NAME}
++        DEPENDS genmacro
+         MAIN_DEPENDENCY ${_in_NAME}
+         )
+ endmacro (YASM_GENMACRO)
+diff --git a/modules/preprocs/nasm/CMakeLists.txt b/modules/preprocs/nasm/CMakeLists.txt
+index e10a9dd12b5b58d5c9f7784492e9ca6bb70f10e9..31e7a0345a01915aa73defa935223f1ff42ba890 100644
+--- a/modules/preprocs/nasm/CMakeLists.txt
++++ b/modules/preprocs/nasm/CMakeLists.txt
+@@ -1,9 +1,8 @@
+ add_executable(genversion preprocs/nasm/genversion.c)
+-get_target_property(_tmp_GENVERSION_EXE genversion LOCATION)
+ add_custom_command(
+     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/version.mac
+-    COMMAND ${_tmp_GENVERSION_EXE} ${CMAKE_CURRENT_BINARY_DIR}/version.mac
+-    DEPENDS ${_tmp_GENVERSION_EXE}
++    COMMAND $<TARGET_FILE:genversion> ${CMAKE_CURRENT_BINARY_DIR}/version.mac
++    DEPENDS genversion
+     )
+ 
+ YASM_GENMACRO(
